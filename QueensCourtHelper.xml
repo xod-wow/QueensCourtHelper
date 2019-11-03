@@ -1,0 +1,69 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+
+    <Script file="QueensCourtHelper.lua" />
+
+    <Button name="QueensCourtHelperButton" inherits="SecureActionButtonTemplate UIPanelButtonTemplate" virtual="true">
+        <Size x="224" y="32" />
+        <Scripts>
+            <OnLoad>
+                self:HookScript("OnClick", function () self:UnlockHighlight() end)
+            </OnLoad>
+        </Scripts>
+    </Button>
+
+    <Frame name="QueensCourtHelper" parent="UIParent" topLevel="true" hidden="true" enableMouse="true" frameStrata="DIALOG" movable="true" clampedToScreen="true" mixin="QueensCourtHelperMixin">
+        <Size x="220" y="236" />
+        <Anchors>
+            <Anchor point="LEFT" />
+        </Anchors>
+
+        <Frames>
+            <Button parentKey="Salute" inherits="QueensCourtHelperButton" text="Form Ranks - Salute">
+                <Size x="224" y="44" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" y="-16" />
+                    <Anchor point="TOPRIGHT" y="-16" />
+                </Anchors>
+            </Button>
+            <Button parentKey="Curtsey" inherits="QueensCourtHelperButton" text="Repeat Performance - Curtsey">
+                <Size x="224" y="44" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.Salute" relativePoint="BOTTOMLEFT" />
+                    <Anchor point="TOPRIGHT" relativeKey="$parent.Salute" relativePoint="BOTTOMRIGHT" />
+                </Anchors>
+            </Button>
+            <Button parentKey="Applause" inherits="QueensCourtHelperButton" text="Stand Alone - Applause">
+                <Size x="224" y="44" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.Curtsey" relativePoint="BOTTOMLEFT" />
+                    <Anchor point="TOPRIGHT" relativeKey="$parent.Curtsey" relativePoint="BOTTOMRIGHT" />
+                </Anchors>
+            </Button>
+            <Button parentKey="Grovel" inherits="QueensCourtHelperButton" text="Deferred Sentence - Grovel">
+                <Size x="224" y="44" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.Applause" relativePoint="BOTTOMLEFT" />
+                    <Anchor point="TOPRIGHT" relativeKey="$parent.Applause" relativePoint="BOTTOMRIGHT" />
+                </Anchors>
+            </Button>
+            <Button parentKey="Kneel" inherits="QueensCourtHelperButton" text="Obey or Suffer - Kneel">
+                <Size x="224" y="44" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.Grovel" relativePoint="BOTTOMLEFT" />
+                    <Anchor point="TOPRIGHT" relativeKey="$parent.Grovel" relativePoint="BOTTOMRIGHT" />
+                </Anchors>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnEvent method="OnEvent" />
+            <OnDragStart>
+                self:StartMoving()
+            </OnDragStart>
+            <OnDragStop>
+                self:StopMovingOrSizing()
+                self:SetUserPlaced(true)
+            </OnDragStop>
+        </Scripts>
+    </Frame>
+</Ui>
