@@ -6,23 +6,13 @@
 
 QueensCourtHelperMixin = { }
 
-local function GetActiveChatFrame()
-    for i = 1, NUM_CHAT_WINDOWS do
-        local f = _G['ChatFrame'..i]
-        if f:IsShown() then
-            return f
-        end
-    end
-    return DEFAULT_CHAT_FRAME
-end
-
 local printTag = ORANGE_FONT_COLOR_CODE
                      .. "QueensCourtHelper: "
                      .. FONT_COLOR_CODE_CLOSE
 
 local function printf(fmt, ...)
     local msg = string.format(fmt, ...)
-    GetActiveChatFrame():AddMessage(printTag .. msg)
+    SELECTED_CHAT_FRAME:AddMessage(printTag .. msg)
 end
 
 function QueensCourtHelperMixin:SlashCommand(arg)
@@ -62,7 +52,6 @@ function QueensCourtHelperMixin:OnLoad()
     self.Kneel:SetAttribute('macrotext', '/target Queen Azshara\n/kneel\n/targetlasttarget')
 
     self:RegisterEvent("ENCOUNTER_START")
-    self:RegisterEvent("ENCOUNTER_END")
     self:RegisterForDrag("LeftButton")
 end
 
@@ -74,10 +63,12 @@ function QueensCourtHelperMixin:OnEvent(event, ...)
         self:Show()
         self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
         self:RegisterEvent("CHAT_MSG_RAID_BOSS_EMOTE")
-    elseif event == "ENCOUNTER_END" and self:IsShown() then
+        self:RegisterEvent("PLAYER_REGEN_ENABLED")
+    elseif event == "PLAYER_REGEN_ENABLED" and self:IsShown() then
         self:Hide()
         self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
         self:UnregisterEvent("CHAT_MSG_RAID_BOSS_EMOTE")
+        self:UnregisterEvent("PLAYER_REGEN_ENABLED")
     elseif event == "CHAT_MSG_RAID_BOSS_EMOTE" then
         self:CMRBE(...)
     elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
